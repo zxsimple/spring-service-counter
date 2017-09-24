@@ -5,21 +5,21 @@
 1. Define performance conter properties
 
 ```
-    <bean id="performanceInterceptor" class="com.juanpi.bis.monitor.BisPerfMonitorInterceptor">
+    <bean id="performanceInterceptor" class="com.zxsimple.monitor.BisPerfMonitorInterceptor">
         <property name="serviceInvocationCounter" ref="serviceInvocationCounter" />
         <property name="enableMonitor" value="true" />
     </bean>
-    <bean id="serviceInvocationCounter" class="com.juanpi.bis.monitor.ServiceInvocationCounter">
+    <bean id="serviceInvocationCounter" class="com.zxsimple.monitor.ServiceInvocationCounter">
         <constructor-arg ref="batchInterval" value="10000" />
         <property name="influxWriter" ref="influxWriter" />
 
     </bean>
-    <bean id="clientInvocationCounter" class="com.juanpi.bis.monitor.ClientInvocationCounter" >
+    <bean id="clientInvocationCounter" class="com.zxsimple.monitor.ClientInvocationCounter" >
         <constructor-arg ref="batchInterval" value="10000" />
         <property name="influxWriter" ref="influxWriter" />
     </bean>
 
-    <bean id="influxWriter" class="com.juanpi.bis.monitor.InfluxWriter" scope="prototype">
+    <bean id="influxWriter" class="com.zxsimple.monitor.InfluxWriter" scope="prototype">
         <constructor-arg ref="influxApiUrl" value="http://192.168.16.96:8086" />
         <constructor-arg ref="influxDBName" value="bird" />
         <constructor-arg ref="influxUser" value="root" />
