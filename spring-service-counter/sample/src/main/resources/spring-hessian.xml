@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+   <bean id="helloWorld" class="com.zxsimple.monitor.sample.HellowWorld" />
+
+   <bean name="/hello"
+         class="org.springframework.remoting.caucho.HessianServiceExporter">
+          <property name="service" ref="helloWorld" />
+          <property name="serviceInterface" value="com.zxsimple.monitor.sample.IHellowWorld" />
+          <property name="interceptors" ref="performanceInterceptor" />
+   </bean>
+
+    <bean id="performanceInterceptor" class="com.zxsimple.monitor.PerfMonitorInterceptor">
+        <property name="serviceInvocationCounter" ref="serviceInvocationCounter" />
+        <property name="enableMonitor" value="true" />
+    </bean>
+    <bean id="serviceInvocationCounter" class="com.zxsimple.monitor.ServiceInvocationCounter">
+        <constructor-arg ref="batchInterval" value="10000" />
+        <property name="influxWriter" ref="influxWriter" />
+
+    </bean>
+    <bean id="clientInvocationCounter" class="com.zxsimple.monitor.ClientInvocationCounter" >
+        <constructor-arg ref="batchInterval" value="10000" />
+        <property name="influxWriter" ref="influxWriter" />
+    </bean>
+
+    <bean id="influxWriter" class="com.zxsimple.monitor.InfluxWriter" scope="prototype">
+        <constructor-arg ref="influxApiUrl" value="http://192.168.16.96:8086" />
+        <constructor-arg ref="influxDBName" value="bird" />
+        <constructor-arg ref="influxUser" value="root" />
+        <constructor-arg ref="influxPassword" value="root" />
+    </bean>
+</beans>
